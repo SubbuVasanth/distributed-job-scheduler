@@ -53,5 +53,6 @@ class Queue(Base):
 
     jobs = relationship(
         "Job",
-        back_populates="queue"
+        back_populates="queue",
+        cascade="all, delete-orphan"
     )

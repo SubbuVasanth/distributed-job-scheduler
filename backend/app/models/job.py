@@ -63,6 +63,11 @@ class Job(Base):
 
     max_attempts = Column(Integer, default=3)
 
+    cron_expression = Column(
+        String(100),
+        nullable=True
+    )
+
     created_at = Column(DateTime, default=datetime.utcnow)
 
     updated_at = Column(
@@ -81,4 +86,10 @@ class Job(Base):
     worker = relationship(
         "Worker",
         back_populates="jobs"
+    )
+
+    executions = relationship(
+        "JobExecution",
+        back_populates="job",
+        cascade="all, delete-orphan"
     )

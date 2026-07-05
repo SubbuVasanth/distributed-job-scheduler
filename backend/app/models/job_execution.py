@@ -35,6 +35,6 @@ class JobExecution(Base):
 
     execution_time_ms = Column(Integer)
 
-    job = relationship("Job")
+    job = relationship("Job", back_populates="executions")
 
     worker = relationship("Worker")

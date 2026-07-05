@@ -1,12 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException
+from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
-from app.schemas.user import (
-    UserRegister,
-    UserResponse,
-    UserLogin,
-    Token,
-)
+
 from app.core.dependencies import get_db
+from app.schemas.user import UserRegister, UserResponse, Token
 from app.services.auth_service import AuthService
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
@@ -32,14 +29,14 @@ def register(user: UserRegister, db: Session = Depends(get_db)):
     response_model=Token,
 )
 def login(
-    user: UserLogin,
+    form_data: OAuth2PasswordRequestForm = Depends(),
     db: Session = Depends(get_db),
 ):
     try:
         return AuthService.login_user(
             db,
-            user.email,
-            user.password,
+            form_data.username,  # email is passed in the username field
+            form_data.password,
         )
 
     except ValueError as e:

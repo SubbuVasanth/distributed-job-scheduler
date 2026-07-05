@@ -42,5 +42,6 @@ class Project(Base):
 
     queues = relationship(
         "Queue",
-        back_populates="project"
+        back_populates="project",
+        cascade="all, delete-orphan"
     )
